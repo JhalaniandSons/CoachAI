@@ -15,9 +15,11 @@ client = OpenAI(
 )
 
 st.set_page_config(page_title="Coach Sportif IA", page_icon="🏋️")
+st.markdown(f'<div lang="fr"></div>', unsafe_allow_html=True)
+
 
 st.markdown("""
-<div style="text-align:center; margin-bottom:40px;">
+<div lang="fr" style="text-align:center; margin-bottom:40px;">
     <h1 style="color:#CC8A27;">Bienvenue sur <b>CoachAI 🏋️</b></h1>
     <p style="font-size:16px; color:#555;">Votre assistant personnel pour le sport, la nutrition et la récupération.</p>
 </div>
@@ -49,7 +51,7 @@ features = [
 
 for feature in features:
     st.markdown(f"""
-    <div style="background-color:{feature['color']}; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #ccc;">
+    <div lang="fr" style="background-color:{feature['color']}; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #ccc;">
         <h3 style="margin:10;">{feature['title']}</h3>
         <p style="margin:5px 0 0 0; color:#333;">{feature['desc']}</p>
     </div>
@@ -61,12 +63,12 @@ st.markdown('<p style="text-align:center; font-size:16px; color:#1E90FF; margin-
 
 # ============= 'MODÈLE DISPONIBLE'==========
 model = st.selectbox(
-    "🤖 Choisis ton modèle Groq",
+    "🤖 Choose your model",
     ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "deepseek-r1-distill-llama-70b"]
 )
 
 # ================ "DÉFINITION D'UN MENU"=========
-menu = st.sidebar.radio("📌 Choisis une section :", [
+menu = st.sidebar.radio("📌 Choose a Section :", [
     "Plan d'entraînement",
     "Banque d'exercices",
     "Suivi des performances",
