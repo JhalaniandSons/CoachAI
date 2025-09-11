@@ -26,8 +26,13 @@ st.markdown("""
     background-color: #0c0c0c; /* Une couleur plus foncée pour le fond */
     background-image: url("https://www.transparenttextures.com/patterns/clean-gray-paper.png");
     background-size: cover; 
+    background-attachment: fixed;
 }
-
+/* Texte */
+.card p {
+    color: #CC8A27;
+    font-size: 16px;
+        }
 /* Style pour les onglets (tabs) */
 .stTabs [role="tab"] {
     background-color: #333333; 
@@ -72,9 +77,9 @@ st.markdown(f'<div lang="fr"></div>', unsafe_allow_html=True)
 
 
 st.markdown("""
-<div lang="fr" style="text-align:center; margin-bottom:40px;">
+<div class="card" lang="fr" style="text-align:center; margin-bottom:40px;">
     <h1 style="color:#CC8A27;">Bienvenue sur <b>CoachAI 🏋️</b></h1>
-    <p style="font-size:16px; color:#555;">Votre assistant personnel pour le sport, la nutrition et la récupération.</p>
+    <p style="font-size:16px;">Votre assistant personnel pour le sport, la nutrition et la récupération.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -132,6 +137,19 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # stocker l'historique des échanges
 if "history" not in st.session_state:
     st.session_state.history = []
+if "plan_stage" not in st.session_state:
+    st.session_state.plan_stage = 0
+if "plan_data" not in st.session_state:
+    st.session_state.plan_data = {}
+
+def next_stage():
+    st.session_state.plan_stage += 1
+
+def reset_plan():
+    st.session_state.plan_stage = 0
+    st.session_state.plan_data = {}
+
+
 def ask_model(system_prompt, user_message):
     messages = [{"role": "system", "content": system_prompt}]
 
@@ -145,15 +163,12 @@ def ask_model(system_prompt, user_message):
         messages=messages,
         temperature=0.6,
         max_completion_tokens=1024,
-        stream=True,
+        stream=False,
         top_p=1.0,
     )
 
     # Accumuler le texte
-    full_response = ""
-    for chunk in response:
-        if chunk.choices[0].delta.content is not None:
-            full_response += chunk.choices[0].delta.content
+    full_response = response.choices[0].message.content.strip()
     st.markdown(full_response)
     # Ajouter à l'historique
     st.session_state.history.append({
@@ -164,29 +179,74 @@ def ask_model(system_prompt, user_message):
     return full_response
 
 def process_user_input(prompt, user_message):
-    return ask_model(prompt, user_message)
+    with st.spinner("CoahAI ...."):
+        return ask_model(prompt, user_message)
 
 # Inputs utilisateur
 # === Logique des modules ===
+st.cache_data
+st.cache_resource
 with tab1:
     st.header("📋 Plan d'entraînement sur mesure")
-    with st.expander("Cliquez pour créer un plan d'entraînement", expanded=True):
-        objectif = st.text_input("Ton objectif ?", "perte de poids")
-        niveau = st.radio("Niveau", ["débutant", "intermédiaire", "avancé"])
-        sport = st.text_input("Sport pratiqué", "musculation")
-        dispo = st.slider("Nombre de jours/semaine", 1, 7, 3)
-        duree = st.slider("Durée par séance (minutes)", 15, 120, 45)
-        materiel = st.text_input("Matériel disponible", "aucun")
-        if st.button("Générer mon plan", key="plan_btn"):
-            prompt = f"""En tant qu'expert dans le domaine sportif, en coaching et en suivi personnalisé. 
-            Génère un plan structuré pour :
-            - Objectif : {objectif}
-            - Niveau : {niveau}
-            - Sport : {sport}
-            - Disponibilité : {dispo} jours/semaine, {duree} min/séance
-            - Matériel : {materiel}
-            """
-            process_user_input(prompt, f"Plan d'entraînement pour {objectif} ({niveau}, {sport})")
+    if st.session_state.plan_stage == 0:
+        st.write("Bonjour ! Pour commencer, quel est ton principal objectif sportif ?")
+        objectif = st.text_input("Ton objectif ?", key="objectif_input_step0")
+        if st.button("Suivant", key="btn_step0"):
+            if objectif:
+                st.session_state.plan_data["objectif"] = objectif
+                st.session_state.plan_stage = 1
+                st.rerun()
+
+    elif st.session_state.plan_stage == 1:
+        st.write("Comment décrirais-tu ton niveau actuel ?")
+        niveau = st.radio("Niveau", ["débutant", "intermédiaire", "avancé"], key="niveau_radio_step1")
+        if st.button("Suivant", key="btn_step1"):
+            st.session_state.plan_data["niveau"] = niveau
+            st.session_state.plan_stage = 2
+            st.rerun()
+
+    elif st.session_state.plan_stage == 2:
+        st.write("Pour quel sport ou quelle activité veux-tu un plan ?")
+        sport = st.text_input("Sport pratiqué", "musculation", key="sport_input_step2")
+        if st.button("Suivant", key="btn_step2"):
+            st.session_state.plan_data["sport"] = sport
+            st.session_state.plan_stage = 3
+            st.rerun()
+
+    elif st.session_state.plan_stage == 3:
+        st.write("Combien de jours par semaine peux-tu t'entraîner et quelle est la durée idéale pour chaque séance ?")
+        dispo = st.slider("Nombre de jours/semaine", 1, 7, 3, key="dispo_slider_step3")
+        duree = st.slider("Durée par séance (minutes)", 15, 120, 45, key="duree_slider_step3")
+        if st.button("Suivant", key="btn_step3"):
+            st.session_state.plan_data["dispo"] = dispo
+            st.session_state.plan_data["duree"] = duree
+            st.session_state.plan_stage = 4
+            st.rerun()
+
+    elif st.session_state.plan_stage == 4:
+        st.write("Pour terminer, quel matériel as-tu à ta disposition ?")
+        materiel = st.text_input("Matériel disponible", "aucun", key="materiel_input_step4")
+        if st.button("Générer mon plan", key="btn_generate"):
+            st.session_state.plan_data["materiel"] = materiel
+            st.session_state.plan_stage = 5
+            st.rerun()
+
+    elif st.session_state.plan_stage == 5:
+        data = st.session_state.plan_data
+        st.info("Génération de votre plan d'entraînement... Veuillez patienter.")
+        prompt = f"""En tant qu'expert dans le domaine sportif, en coaching et en suivi personnalisé, génère un plan d'entraînement structuré et détaillé pour 4 semaines basé sur les informations suivantes :
+        - Objectif : {data['objectif']}
+        - Niveau : {data['niveau']}
+        - Sport : {data['sport']}
+        - Disponibilité : {data['dispo']} jours/semaine, {data['duree']} min/séance
+        - Matériel : {data['materiel']}
+        Le plan doit inclure des séries, des répétitions, des temps de repos, et des conseils de progression. Utilise un format clair et lisible.
+        """
+        process_user_input(prompt, f"Plan d'entraînement pour {data['objectif']} ({data['niveau']}, {data['sport']})")
+
+        if st.button("Nouveau plan", key="btn_restart"):
+            reset_plan()
+            st.rerun()
 
 with tab2:
     st.header("🏋️ Fiches d'exercices détaillées")
