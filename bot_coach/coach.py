@@ -111,8 +111,7 @@ elif menu == "Banque d'exercices":
     exo = st.text_input("Quel exercice veux-tu apprendre ?", "squat")
     if st.button("Expliquer l'exercice"):
         prompt = f"En tant qu'expert dans le domaine sportif, le coaching et grand professeur de sport,Explique comment réaliser correctement {exo} avec étapes, erreurs à éviter, variantes, et matériel."
-        st.write(ask_model(prompt))
-
+    process_user_input(prompt, f"Exercice pour t'améliorer :{exo} ")
 elif menu == "Suivi des performances":
     perf = st.text_area("Décris ta performance (ex: 'j’ai couru 5 km en 25 min')")
     if st.button("Analyser mes progrès"):
