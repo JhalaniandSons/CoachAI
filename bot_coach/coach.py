@@ -16,7 +16,6 @@ client = OpenAI(
 
 st.set_page_config(page_title="Coach Sportif IA", page_icon="🏋️")
 
-
 #===================== STYLES CSS =================
 
 st.markdown("""
@@ -184,8 +183,8 @@ def process_user_input(prompt, user_message):
 
 # Inputs utilisateur
 # === Logique des modules ===
-st.cache_data
-st.cache_resource
+
+
 with tab1:
     st.header("📋 Plan d'entraînement sur mesure")
     if st.session_state.plan_stage == 0:
