@@ -16,21 +16,46 @@ client = OpenAI(
 
 st.set_page_config(page_title="Coach Sportif IA", page_icon="🏋️")
 
-st.title("Bienvenue sur CoachAI 🏋️")
-
 st.markdown("""
-Bonjour ! Je suis **CoachAI**, votre assistant personnel en matière de sport et de bien-être.
+<div style="text-align:center; margin-bottom:40px;">
+    <h1 style="color:#CC8A27;">Bienvenue sur <b>CoachAI 🏋️</b></h1>
+    <p style="font-size:16px; color:#555;">Votre assistant personnel pour le sport, la nutrition et la récupération.</p>
+</div>
+""", unsafe_allow_html=True)
 
-Que vous soyez un athlète chevronné ou que vous commenciez tout juste votre parcours, je suis là pour vous aider à atteindre vos objectifs.
+# Cartes des fonctionnalités
+features = [
+    {
+        "title": "📋 Plan d'entraînement sur mesure",
+        "desc": "Adapté à votre niveau, vos objectifs et votre emploi du temps.",
+        "color": "#3BE466"
+    },
+    {
+        "title": "🏋️ Fiches d'exercices détaillées",
+        "desc": "Instructions complètes pour une exécution parfaite avec variantes et matériel.",
+        "color": "#84408A"
+    },
+    {
+        "title": "📈 Suivi des progrès",
+        "desc": "Visualisez vos performances et ajustez votre programme pour maximiser vos résultats.",
+        "color": "#8A8E97"
+    },
+    {
+        "title": "🥗 Nutrition & récupération",
+        "desc": "Conseils personnalisés sur la nutrition, l’hydratation et la prévention des blessures.",
+        "color": "#CC8A27"
+    }
+]
 
-Je peux :
-* **Créer un plan d'entraînement sur mesure** : adapté à votre niveau, vos objectifs et votre emploi du temps.
-* **Fournir des fiches d'exercices détaillées** : avec des instructions pour une exécution parfaite.
-* **Suivre vos progrès** : et ajuster votre programme pour maximiser vos résultats.
-* **Répondre à toutes vos questions** : sur la nutrition, la récupération, la prévention des blessures, et bien plus encore.
+for feature in features:
+    st.markdown(f"""
+    <div style="background-color:{feature['color']}; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #ccc;">
+        <h3 style="margin:10;">{feature['title']}</h3>
+        <p style="margin:5px 0 0 0; color:#333;">{feature['desc']}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-Prêt à commencer ?
-""")
+st.markdown('<p style="text-align:center; font-size:16px; color:#1E90FF; margin-top:20px;">Prêt à commencer ? 🚀</p>', unsafe_allow_html=True)
 
 
 
@@ -140,3 +165,16 @@ for chat in st.session_state.history:
     st.markdown(f"**CoachAI:** {chat['Coach']}")
 
 st.markdown("N'hésitez pas à poser n'importe quelle question. Je suis là pour vous accompagner à chaque étape de votre parcours sportif.")
+
+
+st.markdown(
+    """
+    <hr style="height:1px;border:none;color:#84408A;background-color:#84408A;" />
+    <p style="text-align: center; color: #84408A; font-size: 14px; margin-top: 10px;">
+        🏋️ Crée par : <b>Eric KOULODJI</b> | 
+        Version : <b>1.0</b> | 
+        <a href="https://github.com/dona-eric/CoachAI" target="_blank" style="color: #1E90FF; text-decoration: none;">GitHub</a>
+    </p>
+    """,
+    unsafe_allow_html=True
+)

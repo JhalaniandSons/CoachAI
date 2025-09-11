@@ -2,7 +2,7 @@
 
 ---
 
-CoachIA est une application web interactive qui utilise l'intelligence artificielle pour fournir un **coaching sportif personnalisé**. L'application est conçue pour aider les personnels, les professeurs de sport, les coach et les débutants à planifier leurs entraînements, apprendre des exercices, suivre leurs performances, recevoir des conseils nutritionnels et gérer leur récupération.
+***CoachIA*** est une application web interactive qui est basé sur l'intelligence artificielle pour fournir un **coaching sportif personnalisé**. L'application est conçue pour aider les personnels, les professeurs de sport, les coachs et les débutants à planifier leurs entraînements, apprendre des exercices, suivre leurs performances, recevoir des conseils nutritionnels et gérer leur récupération.
 
 ---
 Le projet utilise **Streamlit** pour l'interface et les modèles LLM via **GroqCloud API**.
@@ -70,15 +70,16 @@ Créer un fichier .streamlit/secrets.toml avec le contenu suivant :
 ```bash
 API_KEY_GROQ = "VOTRE_CLE_API_GROQ"
 ```
-L'api utilisé est disponible sur la plateforme de GroqCloud ([groq-cloud](https://console.groq.com/docs/reasoning))
-Remplace "VOTRE_CLE_API_GROQ" par ta clé personnelle.
+- L'api utilisé est disponible sur la plateforme de GroqCloud ([groq-cloud](https://console.groq.com/docs)
+
+- Remplace "VOTRE_CLE_API_GROQ" par ta clé personnelle.
 
 ### 4. Lancer l'application
 ```bash
 streamlit run bot_coach/app.py
 ``` 
 
-L'application sera accessible à l'adresse affichée par Streamlit (http://localhost:8501).
+ - L'application sera accessible à l'adresse affichée par Streamlit (http://localhost:8501).
 
 ### ☁️ Déploiement sur Streamlit Cloud
 
@@ -92,7 +93,7 @@ L'application sera accessible à l'adresse affichée par Streamlit (http://local
 4- Déployer. L'application sera accessible en ligne.
 
 ```
-## 📌 Technologies utilisées
+## 📌 5- Technologies utilisées
 
 Streamlit
  - interface web interactive
@@ -106,11 +107,12 @@ Python 3.13+
 
 ### 📝 Notes
 
-Tous les secrets (clé API) doivent être stockés dans .streamlit/secrets.toml.
+ - Tous les secrets (clé API) doivent être stockés dans .streamlit/secrets.toml.
 
-L'application utilise l’historique des échanges pour permettre des conversations multi-échanges avec le chatbot.
+ - L'application utilise l’historique des échanges pour permettre des conversations multi-échanges avec le chatbot.
 
-Le texte final est affiché proprement pour éviter les problèmes de découpage de caractères.
+
+- Vous pouvez désormais visiter le lien : (https://coach-ai.streamlit.app)  pour essayer 
 
 #### 📧 Contact
 
@@ -121,3 +123,4 @@ Pour toute question ou suggestion :
 #### GitHub : https://github.com/dona-eric
 
 ---
+
