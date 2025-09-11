@@ -15,6 +15,59 @@ client = OpenAI(
 )
 
 st.set_page_config(page_title="Coach Sportif IA", page_icon="🏋️")
+
+
+#===================== STYLES CSS =================
+
+st.markdown("""
+<style>
+/* Style pour le corps de la page (arrière-plan) */
+.stApp {
+    background-color: #0c0c0c; /* Une couleur plus foncée pour le fond */
+    background-image: url("https://www.transparenttextures.com/patterns/clean-gray-paper.png");
+    background-size: cover; 
+}
+
+/* Style pour les onglets (tabs) */
+.stTabs [role="tab"] {
+    background-color: #333333; 
+    color: white; 
+    border-radius: 10px 10px 0 0;
+    border: none;
+    margin: 0 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+.stTabs [role="tab"][aria-selected="true"] {
+    background-color: #CC8A27;
+    color: black;
+}
+
+/* Style pour les expanders (boîtes dépliables) */
+.streamlit-expanderHeader {
+    background-color: #444444;
+    color: #CC8A27; 
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid #CC8A27;
+}
+
+/* Style pour les boutons */
+.stButton>button {
+    background-color: #CC8A27;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+}
+.stButton>button:hover {
+    background-color: #a36d1f;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown(f'<div lang="fr"></div>', unsafe_allow_html=True)
 
 
@@ -25,7 +78,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Cartes des fonctionnalités
+# ==================Cartes des fonctionnalités==================
 features = [
     {
         "title": "📋 Plan d'entraînement sur mesure",
@@ -68,11 +121,11 @@ model = st.selectbox(
 )
 
 # ================ "DÉFINITION D'UN MENU"=========
-menu = st.sidebar.radio("📌 Choose a Section :", [
-    "Plan d'entraînement",
-    "Banque d'exercices",
-    "Suivi des performances",
-    "Nutrition & Hydratation",
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "Plan d'entraînement", 
+    "Banque d'exercices", 
+    "Suivi des performances", 
+    "Nutrition & Hydratation", 
     "Récupération & Prévention"
 ])
 
@@ -115,50 +168,58 @@ def process_user_input(prompt, user_message):
 
 # Inputs utilisateur
 # === Logique des modules ===
-if menu == "Plan d'entraînement":
-    objectif = st.text_input("Ton objectif ?", "perte de poids")
-    niveau = st.radio("Niveau", ["débutant", "intermédiaire", "avancé"])
-    sport = st.text_input("Sport pratiqué", "musculation")
-    dispo = st.slider("Nombre de jours/semaine", 1, 7, 3)
-    duree = st.slider("Durée par séance (minutes)", 15, 120, 45)
-    materiel = st.text_input("Matériel disponible", "aucun")
+with tab1:
+    st.header("📋 Plan d'entraînement sur mesure")
+    with st.expander("Cliquez pour créer un plan d'entraînement", expanded=True):
+        objectif = st.text_input("Ton objectif ?", "perte de poids")
+        niveau = st.radio("Niveau", ["débutant", "intermédiaire", "avancé"])
+        sport = st.text_input("Sport pratiqué", "musculation")
+        dispo = st.slider("Nombre de jours/semaine", 1, 7, 3)
+        duree = st.slider("Durée par séance (minutes)", 15, 120, 45)
+        materiel = st.text_input("Matériel disponible", "aucun")
+        if st.button("Générer mon plan", key="plan_btn"):
+            prompt = f"""En tant qu'expert dans le domaine sportif, en coaching et en suivi personnalisé. 
+            Génère un plan structuré pour :
+            - Objectif : {objectif}
+            - Niveau : {niveau}
+            - Sport : {sport}
+            - Disponibilité : {dispo} jours/semaine, {duree} min/séance
+            - Matériel : {materiel}
+            """
+            process_user_input(prompt, f"Plan d'entraînement pour {objectif} ({niveau}, {sport})")
 
-    if st.button("Générer mon plan"):
-        prompt = f"""En tant qu'expert dans le domaine sportif, en coaching et en suivi personnalisé. 
-        Génère un plan structuré pour :
-        - Objectif : {objectif}
-        - Niveau : {niveau}
-        - Sport : {sport}
-        - Disponibilité : {dispo} jours/semaine, {duree} min/séance
-        - Matériel : {materiel}
-        """
-        process_user_input(prompt, f"Plan d'entraînement pour {objectif} ({niveau}, {sport})")
+with tab2:
+    st.header("🏋️ Fiches d'exercices détaillées")
+    with st.expander("Cliquez pour chercher un exercice", expanded=True):
+        exo = st.text_input("Quel exercice veux-tu apprendre ?", "squat")
+        if st.button("Expliquer l'exercice", key="exo_btn"):
+            prompt = f"En tant qu'expert dans le domaine sportif, le coaching et grand professeur de sport, Explique comment réaliser correctement {exo} avec étapes, erreurs à éviter, variantes, et matériel."
+            process_user_input(prompt, f"Exercice pour t'améliorer :{exo} ")
 
-elif menu == "Banque d'exercices":
-    exo = st.text_input("Quel exercice veux-tu apprendre ?", "squat")
-    if st.button("Expliquer l'exercice"):
-        prompt = f"En tant qu'expert dans le domaine sportif, le coaching et grand professeur de sport,Explique comment réaliser correctement {exo} avec étapes, erreurs à éviter, variantes, et matériel."
-        process_user_input(prompt, f"Exercice pour t'améliorer :{exo} ")
+with tab3:
+    st.header("📈 Suivi des progrès")
+    with st.expander("Cliquez pour suivre vos progrès", expanded=True):
+        perf = st.text_area("Décris ta performance (ex: 'j’ai couru 5 km en 25 min')")
+        if st.button("Analyser mes progrès", key="suivi_btn"):
+            prompt = f"Analyse cette performance et donne un feedback motivant : {perf}"
+            process_user_input(prompt, f"Analyse de performance : {perf}")
 
-elif menu == "Suivi des performances":
-    perf = st.text_area("Décris ta performance (ex: 'j’ai couru 5 km en 25 min')")
-    if st.button("Analyser mes progrès"):
-        prompt = f"Analyse cette performance et donne un feedback motivant : {perf}"
-        process_user_input(prompt, f"Analyse de performance : {perf}")
+with tab4:
+    st.header("🥗 Nutrition & Hydratation")
+    with st.expander("Cliquez pour des conseils", expanded=True):
+        obj = st.text_input("Ton objectif sportif ?", "prise de masse")
+        typ = st.text_input("Type d’entraînement ?", "musculation")
+        if st.button("Conseils nutrition", key="nutri_btn"):
+            prompt = f"Donne des conseils nutritionnels et hydratation adaptés à {obj} et {typ}."
+            process_user_input(prompt, f"Nutrition pour {obj} - {typ}")
 
-elif menu == "Nutrition & Hydratation":
-    obj = st.text_input("Ton objectif sportif ?", "prise de masse")
-    typ = st.text_input("Type d’entraînement ?", "musculation")
-    if st.button("Conseils nutrition"):
-        prompt = f"Donne des conseils nutritionnels et hydratation adaptés à {obj} et {typ}."
-        process_user_input(prompt, f"Nutrition pour {obj} - {typ}")
-
-elif menu == "Récupération & Prévention":
-    seance = st.text_input("Type de séance effectuée ?", "course intense")
-    if st.button("Plan de récupération"):
-        prompt = f"L’utilisateur a fait {seance}. Donne un plan de récupération avec étirements, sommeil, prévention blessures."
-        process_user_input(prompt, f"Récupération après {seance}")
-
+with tab5:
+    st.header("🛌 Récupération & Prévention")
+    with st.expander("Cliquez pour un plan de récupération", expanded=True):
+        seance = st.text_input("Type de séance effectuée ?", "course intense")
+        if st.button("Plan de récupération", key="recup_btn"):
+            prompt = f"L’utilisateur a fait {seance}. Donne un plan de récupération avec étirements, sommeil, prévention blessures."
+            process_user_input(prompt, f"Récupération après {seance}")
 
 # =================="HISTORIQUE DES ÉCHANGES" ===================
 st.subheader("💬 HISTORYQUE")
@@ -171,11 +232,24 @@ st.markdown("N'hésitez pas à poser n'importe quelle question. Je suis là pour
 
 st.markdown(
     """
-    <hr style="height:1px;border:none;color:#84408A;background-color:#84408A;" />
-    <p style="text-align: center; color: #84408A; font-size: 14px; margin-top: 10px;">
+    <style>
+    .stApp hr {
+        border-color: #CC8A27
+    }
+    .stApp .css-1yv5y8n { 
+        color: #f0f0f0 !important;
+    }
+
+    /* Style pour le lien GitHub */
+    .stApp a {
+        color: #3BE466
+    }
+    </style>
+    <hr style="height:1px;border:none;color:#CC8A27;background-color:#CC8A27;" />
+    <p style="text-align: center; color: #f0f0f0; font-size: 14px; margin-top: 10px;">
         🏋️ Crée par : <b>Eric KOULODJI</b> | 
         Version : <b>1.0</b> | 
-        <a href="https://github.com/dona-eric/CoachAI" target="_blank" style="color: #1E90FF; text-decoration: none;">GitHub</a>
+        <a href="https://github.com/dona-eric/CoachAI" target="_blank" style="color: #3BE466; text-decoration: none;">GitHub</a>
     </p>
     """,
     unsafe_allow_html=True
