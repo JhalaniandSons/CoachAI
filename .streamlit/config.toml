@@ -1,7 +1,7 @@
 [theme]
 base="light"
 primaryColor="#1f77b4"     # bleu
-backgroundColor="#5c4040ff"  # fond gris clair
-secondaryBackgroundColor="#665757ff" # cartes/blocs
+backgroundColor="#3a47433d"  # fond gris clair
+secondaryBackgroundColor="#225544ff" # cartes/blocs
 textColor="#000000"        # texte noir
 font="sans serif"
