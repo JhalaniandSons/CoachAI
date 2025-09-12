@@ -1,23 +1,17 @@
 from groq import AsyncClient, AsyncGroq, Groq
 import streamlit as st
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 from dotenv import load_dotenv
-import os
+import os, asyncio
 
 ## chargement de l'environnement 
 load_dotenv()
-groq_api_key = st.secrets["API_KEY_GROQ"]
-
-# Initialiser le client Groq (API OpenAI compatible)
-client = OpenAI(
-    api_key=groq_api_key,
-    base_url="https://api.groq.com/openai/v1"
-)
-
 st.set_page_config(page_title="Coach Sportif IA", page_icon="🏋️")
 
-#===================== STYLES CSS =================
 
+st.balloons()
+
+#===================== STYLES CSS =================
 st.markdown("""
 <style>
 /* Style pour le corps de la page (arrière-plan) */
@@ -74,12 +68,19 @@ st.markdown("""
 
 st.markdown(f'<div lang="fr"></div>', unsafe_allow_html=True)
 
-
 st.markdown("""
-<div class="card" lang="fr" style="text-align:center; margin-bottom:40px;">
-    <h1 style="color:#CC8A27;">Bienvenue sur <b>CoachAI 🏋️</b></h1>
-    <p style="font-size:16px;">Votre assistant personnel pour le sport, la nutrition et la récupération.</p>
+<div class="card" lang="fr" style="text-align:center; margin-bottom:60px;">
+    <h1 style="color:#CC8A27;">Welcome on <b>CoachAI 🏋️</b></h1>
 </div>
+            
+<div style="text-align:center; margin-bottom:40px;">
+    <h3 style="color:#CC8A27;">Prépare-toi à transformer ta vie !</h3>
+    <h4 style="font-size:18px; color:#CC8A29;">
+        <b>CoachAI</b> est ton partenaire dédié pour le sport, la nutrition et la récupération.<br>
+        Ensemble, on va atteindre tes objectifs ! 💪🚀
+    </h4>
+</div>
+          
 """, unsafe_allow_html=True)
 
 # ==================Cartes des fonctionnalités==================
@@ -119,9 +120,9 @@ st.markdown('<p style="text-align:center; font-size:16px; color:#1E90FF; margin-
 
 
 # ============= 'MODÈLE DISPONIBLE'==========
-model = st.selectbox(
-    "🤖 Choose your model",
-    ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "deepseek-r1-distill-llama-70b"]
+model = st.sidebar.selectbox(
+    "🏆 CHOOSE YOUR MODEL",
+    ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "groq/compound","llama-3.3-70b-versatile"]
 )
 
 # ================ "DÉFINITION D'UN MENU"=========
@@ -140,6 +141,8 @@ if "plan_stage" not in st.session_state:
     st.session_state.plan_stage = 0
 if "plan_data" not in st.session_state:
     st.session_state.plan_data = {}
+if "current_chat" not in st.session_state:
+    st.session_state.current_chat = None
 
 def next_stage():
     st.session_state.plan_stage += 1
@@ -148,8 +151,16 @@ def reset_plan():
     st.session_state.plan_stage = 0
     st.session_state.plan_data = {}
 
+#========================STRUCTURE API =================
 
-def ask_model(system_prompt, user_message):
+groq_api_key = st.secrets["API_KEY_GROQ"]
+
+# Initialiser le client Groq (API OpenAI compatible)
+client = AsyncOpenAI(
+    api_key=groq_api_key,
+    base_url="https://api.groq.com/openai/v1"
+)
+async def ask_model(system_prompt, user_message):
     messages = [{"role": "system", "content": system_prompt}]
 
     for h in st.session_state.history:
@@ -157,17 +168,22 @@ def ask_model(system_prompt, user_message):
         messages.append({"role": "assistant", "content": h["Coach"]})
     messages.append({"role": "user", "content": user_message})
 
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=0.6,
         max_completion_tokens=1024,
-        stream=False,
+        stream=True,
         top_p=1.0,
+        stop=None,
     )
 
+    ##afficher les resultats en continu
+    full_response = ""
+    async for chunk in response:
+        if chunk.choices[0].delta.content is not None:
+            full_response += chunk.choices[0].delta.content
     # Accumuler le texte
-    full_response = response.choices[0].message.content.strip()
     st.markdown(full_response)
     # Ajouter à l'historique
     st.session_state.history.append({
@@ -179,7 +195,7 @@ def ask_model(system_prompt, user_message):
 
 def process_user_input(prompt, user_message):
     with st.spinner("CoahAI ...."):
-        return ask_model(prompt, user_message)
+        return asyncio.run(ask_model(prompt, user_message))
 
 # Inputs utilisateur
 # === Logique des modules ===
@@ -225,7 +241,7 @@ with tab1:
     elif st.session_state.plan_stage == 4:
         st.write("Pour terminer, quel matériel as-tu à ta disposition ?")
         materiel = st.text_input("Matériel disponible", "aucun", key="materiel_input_step4")
-        if st.button("Générer mon plan", key="btn_generate"):
+        if st.button("Generate Plan", key="btn_generate"):
             st.session_state.plan_data["materiel"] = materiel
             st.session_state.plan_stage = 5
             st.rerun()
@@ -260,9 +276,11 @@ with tab3:
     with st.expander("Cliquez pour suivre vos progrès", expanded=True):
         perf = st.text_area("Décris ta performance (ex: 'j’ai couru 5 km en 25 min')")
         if st.button("Analyser mes progrès", key="suivi_btn"):
-            prompt = f"Analyse cette performance et donne un feedback motivant : {perf}"
+            prompt = f"""Analyse cette performance et donne un feedback motivant et technique : {perf}
+                        Félicite l'utilisateur s'il y a un progrès notable ou remarquable.
+   
+                     """
             process_user_input(prompt, f"Analyse de performance : {perf}")
-
 with tab4:
     st.header("🥗 Nutrition & Hydratation")
     with st.expander("Cliquez pour des conseils", expanded=True):
@@ -280,11 +298,31 @@ with tab5:
             prompt = f"L’utilisateur a fait {seance}. Donne un plan de récupération avec étirements, sommeil, prévention blessures."
             process_user_input(prompt, f"Récupération après {seance}")
 
+
 # =================="HISTORIQUE DES ÉCHANGES" ===================
-st.subheader("💬 HISTORYQUE")
-for chat in st.session_state.history:
-    st.markdown(f"**Vous:** {chat['user']}")
-    st.markdown(f"**CoachAI:** {chat['Coach']}")
+
+st.sidebar.title("CoachAI")
+chat_ids = [f"Chat {i+1}: {h['user'][:20]}..." for i, h in enumerate(st.session_state.history)]
+
+selected = st.sidebar.radio("Conversations", ["Nouvelle conversation"] + chat_ids)
+
+if selected != "Nouvelle conversation":
+    idx = int(selected.split(":")[0].split(" ")[1]) - 1
+    st.session_state.current_chat = idx
+else:
+    st.session_state.current_chat = None
+
+# --- Affichage conversation courante ---
+st.subheader("Conversation")
+if st.session_state.current_chat is not None:
+    chat = st.session_state.history[st.session_state.current_chat]
+    st.markdown(f"**User :** {chat['user']}")
+    st.markdown(f"**Coach :** {chat['Coach']}")
+elif st.session_state.history:
+    # Afficher la dernière conversation
+    last_chat = st.session_state.history[-1]
+    st.markdown(f"**User :** {last_chat['user']}")
+    st.markdown(f"**Coach :** {last_chat['Coach']}")
 
 st.markdown("N'hésitez pas à poser n'importe quelle question. Je suis là pour vous accompagner à chaque étape de votre parcours sportif.")
 
@@ -304,10 +342,8 @@ st.markdown(
         color: #3BE466
     }
     </style>
-    <hr style="height:1px;border:none;color:#CC8A27;background-color:#CC8A27;" />
-    <p style="text-align: center; color: #f0f0f0; font-size: 14px; margin-top: 10px;">
-        🏋️ Crée par : <b>Eric KOULODJI</b> | 
-        Version : <b>1.0</b> | 
+    <hr style="height:0px;border:none;color:#CC8A27;background-color:#CC8A27;" />
+    <p style="text-align: center; color: #f0f0f0; font-size: 14px; margin-top: 10px;">🏋️ Crée par : <b>Eric KOULODJI</b> Version : <b>1.0</b>
         <a href="https://github.com/dona-eric/CoachAI" target="_blank" style="color: #3BE466; text-decoration: none;">GitHub</a>
     </p>
     """,
