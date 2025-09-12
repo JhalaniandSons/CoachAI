@@ -9,7 +9,7 @@ load_dotenv()
 st.set_page_config(page_title="Coach Sportif IA", page_icon="🏋️")
 
 
-st.balloons()
+#st.balloons()
 
 #===================== STYLES CSS =================
 st.markdown("""
